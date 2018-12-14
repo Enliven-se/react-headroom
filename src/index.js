@@ -1,4 +1,4 @@
-import React, { Component } from 'react' // eslint-disable-line import/no-unresolved
+import React, {Component} from 'react' // eslint-disable-line import/no-unresolved
 import PropTypes from 'prop-types'
 import shallowequal from 'shallowequal'
 import raf from 'raf'
@@ -21,7 +21,7 @@ export default class Headroom extends Component {
     wrapperStyle: PropTypes.object,
     pinStart: PropTypes.number,
     style: PropTypes.object,
-    calcHeightOnResize: PropTypes.bool,
+    calcHeightOnResize: PropTypes.bool
   };
 
   static defaultProps = {
@@ -35,10 +35,10 @@ export default class Headroom extends Component {
     onUnfix: noop,
     wrapperStyle: {},
     pinStart: 0,
-    calcHeightOnResize: true,
+    calcHeightOnResize: true
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     // Class variables.
     this.currentScrollY = 0
@@ -48,104 +48,116 @@ export default class Headroom extends Component {
     this.state = {
       state: 'unfixed',
       translateY: 0,
-      className: 'headroom headroom--unfixed',
+      className: 'headroom headroom--unfixed'
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.setHeightOffset()
     if (!this.props.disable) {
-      this.props.parent().addEventListener('scroll', this.handleScroll)
+      this
+        .props
+        .parent()
+        .addEventListener('scroll', this.handleScroll)
 
       if (this.props.calcHeightOnResize) {
-        this.props.parent().addEventListener('resize', this.handleResize)
+        this
+          .props
+          .parent()
+          .addEventListener('resize', this.handleResize)
       }
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.disable && !this.props.disable) {
       this.unfix()
-      this.props.parent().removeEventListener('scroll', this.handleScroll)
-      this.props.parent().removeEventListener('resize', this.handleResize)
+      this
+        .props
+        .parent()
+        .removeEventListener('scroll', this.handleScroll)
+      this
+        .props
+        .parent()
+        .removeEventListener('resize', this.handleResize)
     } else if (!nextProps.disable && this.props.disable) {
-      this.props.parent().addEventListener('scroll', this.handleScroll)
+      this
+        .props
+        .parent()
+        .addEventListener('scroll', this.handleScroll)
 
       if (this.props.calcHeightOnResize) {
-        this.props.parent().addEventListener('resize', this.handleResize)
+        this
+          .props
+          .parent()
+          .addEventListener('resize', this.handleResize)
       }
     }
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    return (
-      !shallowequal(this.props, nextProps) ||
-      !shallowequal(this.state, nextState)
-    )
+  shouldComponentUpdate(nextProps, nextState) {
+    return (!shallowequal(this.props, nextProps) || !shallowequal(this.state, nextState))
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     // If children have changed, remeasure height.
     if (prevProps.children !== this.props.children) {
       this.setHeightOffset()
     }
   }
 
-  componentWillUnmount () {
-    this.props.parent().removeEventListener('scroll', this.handleScroll)
+  componentWillUnmount() {
+    this
+      .props
+      .parent()
+      .removeEventListener('scroll', this.handleScroll)
     window.removeEventListener('scroll', this.handleScroll)
-    this.props.parent().removeEventListener('resize', this.handleResize)
+    this
+      .props
+      .parent()
+      .removeEventListener('resize', this.handleResize)
   }
 
   setRef = ref => (this.inner = ref)
 
   setHeightOffset = () => {
-    this.setState({
-      height: this.inner.offsetHeight,
-    })
+    this.setState({height: this.inner.offsetHeight})
     this.resizeTicking = false
   }
 
   getScrollY = () => {
     if (this.props.parent().pageYOffset !== undefined) {
-      return this.props.parent().pageYOffset
+      return this
+        .props
+        .parent()
+        .pageYOffset
     } else if (this.props.parent().scrollTop !== undefined) {
-      return this.props.parent().scrollTop
+      return this
+        .props
+        .parent()
+        .scrollTop
     } else {
       return (document.documentElement || document.body.parentNode || document.body).scrollTop
     }
   }
 
-  getViewportHeight = () => (
-    window.innerHeight
-      || document.documentElement.clientHeight
-      || document.body.clientHeight
-  )
+  getViewportHeight = () => (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)
 
   getDocumentHeight = () => {
     const body = document.body
     const documentElement = document.documentElement
 
-    return Math.max(
-      body.scrollHeight, documentElement.scrollHeight,
-      body.offsetHeight, documentElement.offsetHeight,
-      body.clientHeight, documentElement.clientHeight
-    )
+    return Math.max(body.scrollHeight, documentElement.scrollHeight, body.offsetHeight, documentElement.offsetHeight, body.clientHeight, documentElement.clientHeight)
   }
 
-  getElementPhysicalHeight = elm => Math.max(
-    elm.offsetHeight,
-    elm.clientHeight
-  )
+  getElementPhysicalHeight = elm => Math.max(elm.offsetHeight, elm.clientHeight)
 
-  getElementHeight = elm => Math.max(
-    elm.scrollHeight,
-    elm.offsetHeight,
-    elm.clientHeight,
-  )
+  getElementHeight = elm => Math.max(elm.scrollHeight, elm.offsetHeight, elm.clientHeight,)
 
   getScrollerPhysicalHeight = () => {
-    const parent = this.props.parent()
+    const parent = this
+      .props
+      .parent()
 
     return (parent === window || parent === document.body)
       ? this.getViewportHeight()
@@ -153,7 +165,9 @@ export default class Headroom extends Component {
   }
 
   getScrollerHeight = () => {
-    const parent = this.props.parent()
+    const parent = this
+      .props
+      .parent()
 
     return (parent === window || parent === document.body)
       ? this.getDocumentHeight()
@@ -186,45 +200,34 @@ export default class Headroom extends Component {
   }
 
   unpin = () => {
-    this.props.onUnpin()
+    this
+      .props
+      .onUnpin()
 
-    this.setState({
-      translateY: '-100%',
-      className: 'headroom headroom--unpinned',
-      state: 'unpinned',
-    })
+    this.setState({translateY: '-100%', className: 'headroom headroom--unpinned', state: 'unpinned'})
   }
 
   pin = () => {
-    this.props.onPin()
+    this
+      .props
+      .onPin()
 
-    this.setState({
-      translateY: 0,
-      className: 'headroom headroom--pinned',
-      state: 'pinned',
-    })
+    this.setState({translateY: 0, className: 'headroom headroom--pinned', state: 'pinned'})
   }
 
   unfix = () => {
-    this.props.onUnfix()
+    this
+      .props
+      .onUnfix()
 
-    this.setState({
-      translateY: 0,
-      className: 'headroom headroom--unfixed',
-      state: 'unfixed',
-    })
+    this.setState({translateY: 0, className: 'headroom headroom--unfixed', state: 'unfixed'})
   }
 
   update = () => {
     this.currentScrollY = this.getScrollY()
 
     if (!this.isOutOfBound(this.currentScrollY)) {
-      const { action } = shouldUpdate(
-        this.lastKnownScrollY,
-        this.currentScrollY,
-        this.props,
-        this.state
-      )
+      const {action} = shouldUpdate(this.lastKnownScrollY, this.currentScrollY, this.props, this.state)
 
       if (action === 'pin') {
         this.pin()
@@ -239,8 +242,11 @@ export default class Headroom extends Component {
     this.scrollTicking = false
   }
 
-  render () {
-    const { className: userClassName, ...divProps } = this.props
+  render() {
+    const {
+      className: userClassName,
+      ...divProps
+    } = this.props
     delete divProps.onUnpin
     delete divProps.onPin
     delete divProps.onUnfix
@@ -253,32 +259,38 @@ export default class Headroom extends Component {
     delete divProps.pinStart
     delete divProps.calcHeightOnResize
 
-    const { style, wrapperStyle, ...rest } = divProps
+    const {
+      style,
+      wrapperStyle,
+      ...rest
+    } = divProps
 
     let innerStyle = {
-      position: this.props.disable || this.state.state === 'unfixed' ? 'relative' : 'fixed',
+      position: this.props.disable || this.state.state === 'unfixed'
+        ? 'relative'
+        : 'fixed',
       top: 0,
       left: 0,
       right: 0,
       zIndex: 1,
       WebkitTransform: `translate3D(0, ${this.state.translateY}, 0)`,
       MsTransform: `translate3D(0, ${this.state.translateY}, 0)`,
-      transform: `translate3D(0, ${this.state.translateY}, 0)`,
+      transform: `translate3D(0, ${this.state.translateY}, 0)`
     }
 
     let className = this.state.className
 
-    // Don't add css transitions until after we've done the initial
-    // negative transform when transitioning from 'unfixed' to 'unpinned'.
-    // If we don't do this, the header will flash into view temporarily
-    // while it transitions from 0 — -100%.
+    // Don't add css transitions until after we've done the initial negative
+    // transform when transitioning from 'unfixed' to 'unpinned'. If we don't do
+    // this, the header will flash into view temporarily while it transitions from 0
+    // — -100%.
     if (this.state.state !== 'unfixed') {
       innerStyle = {
         ...innerStyle,
         WebkitTransition: 'all .2s ease-in-out',
         MozTransition: 'all .2s ease-in-out',
         OTransition: 'all .2s ease-in-out',
-        transition: 'all .2s ease-in-out',
+        transition: 'all .2s ease-in-out'
       }
       className += ' headroom--scrolled'
     }
@@ -286,7 +298,7 @@ export default class Headroom extends Component {
     if (!this.props.disableInlineStyles) {
       innerStyle = {
         ...innerStyle,
-        ...style,
+        ...style
       }
     } else {
       innerStyle = style
@@ -294,7 +306,9 @@ export default class Headroom extends Component {
 
     const wrapperStyles = {
       ...wrapperStyle,
-      height: this.state.height ? this.state.height : null,
+      height: this.state.height
+        ? this.state.height
+        : null
     }
 
     const wrapperClassName = userClassName
@@ -303,12 +317,7 @@ export default class Headroom extends Component {
 
     return (
       <div style={wrapperStyles} className={wrapperClassName}>
-        <div
-          ref={this.setRef}
-          {...rest}
-          style={innerStyle}
-          className={className}
-        >
+        <div ref={this.setRef} {...rest} style={innerStyle} className={className}>
           {this.props.children}
         </div>
       </div>
